@@ -1,15 +1,30 @@
 const express = require('express');
 const path = require('path');
-const logger = require('./config/logger');
+const {logger} = require('./config/logger');
+const mongoose = require('mongoose');
+require('dotenv/config'); // config file for DB conn
+const cors = require('cors');
 
 const app = express();
 
 
 /*Initialize middleware*/
+//with app.use(middleware);
 app.use(logger);
-//body parser
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+//body parser (working with encoded URLs)
+app.use(express.json()); // get json data
+app.use(express.urlencoded({extended: false})); //get encoded URL
+app.use(cors());
+
+//connect to mongoDB
+mongoose.connect(
+    process.env.DB_CONNECTION,
+    {useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true},
+
+    () => console.log("Connected to DB")
+);
 
 /*-----------Routes-----------*/
 app.use('/api/users', require('./api/users'))

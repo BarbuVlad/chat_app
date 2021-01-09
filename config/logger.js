@@ -8,4 +8,7 @@ Time: ${moment().format()} \n`);
     next();
 } 
 
-module.exports = logger;
+module.exports = {
+    logger
+
+};
