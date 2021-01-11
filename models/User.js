@@ -8,8 +8,8 @@ const UserSchema = mongoose.Schema({
     },
 
     password: {
-        type: String,
-        required: true
+        type: String
+      //  required: true
     },
     
     contacts: {

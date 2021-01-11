@@ -16,22 +16,32 @@
 	<body>
 		<div class="join-container">
 			<header class="join-header">
-				<h1><i class="fas fa-smile"></i> ChatCord</h1>
+				<h1><i class="fas fa-smile"></i> ChatApp</h1>
 			</header>
 			<main class="join-main">
-				<form action="chat.html">
+				<form id ="form-login" action="index.html">
 					<div class="form-control">
-						<label for="username">Username</label>
+						<label for="username_a">Username(yours)</label>
 						<input
 							type="text"
-							name="username"
+							name="username_a"
 							id="username"
 							placeholder="Enter username..."
 							required
 						/>
 					</div>
+					
 					<div class="form-control">
-						<label for="room">Room</label>
+						<label for="username_b">Username of other</label>
+						<input
+							type="text"
+							name="username_b"
+							id="username"
+							placeholder="Enter username of other user..."
+							required
+						/>
+
+								<!--
 						<select name="room" id="room">
 							<option value="JavaScript">JavaScript</option>
 							<option value="Python">Python</option>
@@ -40,10 +50,13 @@
 							<option value="Ruby">Ruby</option>
 							<option value="Java">Java</option>
 						</select>
+								-->
 					</div>
-					<button type="submit" class="btn">Join Chat</button>
+					<button type="submit" class="btn">Login & Register</button>
+
 				</form>
 			</main>
 		</div>
+		<script src="js/login.js"></script>
 	</body>
 </html>

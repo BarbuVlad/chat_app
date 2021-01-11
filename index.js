@@ -36,8 +36,8 @@ mongoose.connect(
 );
 
 /*-----------Routes-----------*/
-app.use('/api/users', require('./api/users'))
-
+app.use('/api/users', require('./api/users'));
+app.use('/api/conversations', require('./api/conversations'));
 //set a static folder (the view from MVC)
 server_express.use(express.static(path.join(__dirname, 'public')));
 /*
@@ -49,24 +49,36 @@ app.get('/', (req, res) => {
 
 //Websockets server logic
 io.on('connection', socket => {
+   // console.log('connect');
+    //relative to room/conversation between 2 users
+    socket.on('joinRoom', ({ username_a, username_b}) => {
+        console.log(username_b, username_a);
+        //join room with name: user_a + user_b
+        //socket.join("abcdefghij");
+
+        //Lisen for client message:
+        socket.on('chatMessage', message => {
+           // io.to(room).emit('message', formatMessage(username_a, message));
+           io.emit('message', formatMessage(username_a, message));
+
+        });
+
+        //socket.broadcast.emit('message', formatMessage("Bot", "A user has joined!"));
+        socket.broadcast
+        //.to(room)
+        .emit('message', formatMessage("Bot", `${username_a} has joined!`));
 
 
-    console.log('connect');
-
-    //Lisen for client message:
-    socket.on('chatMessage', message => {
-        io.emit('message', formatMessage("USER", message));
-
-
+        socket.on('disconnect', () => {
+            io.emit('message', formatMessage("Bot", "A user has disconnected!"));
+        });
     });
 
-    //socket.broadcast.emit('message', formatMessage("Bot", "A user has joined!"));
-    socket.on('disconnect', () => {
-        io.emit('message', formatMessage("Bot", "A user has disconnected!"));
-    })
+
+
   });
 
 const PORT = process.env.PORT || 5000; //separate in config file
 
-app.listen(PORT, () => console.log(`Server(express) running on port ${PORT}`));
-server.listen(PORT+10, () => console.log(`Server(http) running on port ${PORT+10}`))
+app.listen(PORT, () => console.log(`Server(REST API) running on port ${PORT}`));
+server.listen(PORT+10, () => console.log(`Server(websockets) running on port ${PORT+10}`))

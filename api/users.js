@@ -12,12 +12,10 @@ router.get('/', async (req,res) => {
     }
 });
 
-
-//Get user by id
-router.get('/:id', async (req,res) => {
-
+//Get user by name
+router.get('/:name', async (req,res) => {
     try{
-        const user = await User.findById(req.params.id);
+        const user = await User.findOne({'name': req.params.name});
         res.status(200).json(user);
     } catch(err){
         console.log(`Error at find userById: ${err}`);
@@ -30,19 +28,19 @@ router.post('/', async (req, res) => {
     //console.log(req.body);
     //create a new user
     const user = new User({
-        name: req.body.name,
-        password: req.body.password
+        name: req.body.name
+       // password: req.body.password
     });
 
     //check data
-    if(!user.name || !user.password) {
-        return res.status(400).json({message:'Include name and password'});
+    if(!user.name) {
+        return res.status(400).json({message:'Include name'});
     }
 
     //save to DB
     try{
     const savedUser = await user.save(); //wait for DB response
-    res.status(200).json({message:`User ${user.name} created! `});
+    res.status(200).json({message:user.name});//`User ${user.name} created! `
 
     } catch (err){
         console.log(`User NOT created. ERROR: ${err}`);
