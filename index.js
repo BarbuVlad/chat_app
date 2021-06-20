@@ -40,16 +40,16 @@ app.use('/api/users', require('./api/users'));
 app.use('/api/conversations', require('./api/conversations'));
 //set a static folder (the view from MVC)
 server_express.use(express.static(path.join(__dirname, 'public')));
-/*
+
 app.get('/', (req, res) => {
     res.send("<h2>Server is running!</h2>");
     //res.sendFile();
 })
-*/
+
 
 //Websockets server logic
 io.on('connection', socket => {
-   // console.log('connect');
+    console.log('connected:', socket.id);
     //relative to room/conversation between 2 users
     socket.on('joinRoom', ({ username_a, username_b}) => {
         console.log(username_b, username_a);
