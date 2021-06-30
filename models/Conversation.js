@@ -12,24 +12,17 @@ const ConversationSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'//<can be used with .find().populate() function
     },
-    /*
-    username_b: {
-        type: String,
-        required: true
-    },
-    username_a: {
-        type: String,
-        required: true
-    },*/
     
     messages: {
-        type: []
+        type:[ {type:Map, of: []} ],  // "name" => ["message", "date_and_time"]
+        default: []
     }
 });
+//Schema methods:
+    //...
 
-
-module.exports = mongoose.model('conversations', ConversationSchema);
-
+const Conversation = mongoose.model('conversations',ConversationSchema);//model
+module.exports.Conversation = Conversation;
 /*.find()
 .populate('username_a_ref', 'name -_id') -> will expand a prop in select with name and exclude _id
 .populate('username_b_ref', 'name -_id')
