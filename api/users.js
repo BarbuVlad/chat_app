@@ -170,9 +170,13 @@ router.post('/login', async (req, res) => {
     if(!req.body.name || !req.body.password || !user){
         return res.status(400).json({message:'Invalid data.', code:1});
     }
+
     const valid_password = await bcrypt.compare(req.body.password, user.password);
     if(!valid_password){
         return res.status(400).json({message:'Invalid data.', code:2});
+    }
+    if(user.blocked===true){
+        return res.status(403).json({message:'You have been blocked!', code:3});
     }
     const token = user.generateAuthToken();
 
@@ -333,5 +337,6 @@ router.patch('/block_action', [authorization, adminAllow], async(req, res) =>{
 
 
 //-----------DELETE-----------
+
 
 module.exports = router;
